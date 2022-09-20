@@ -4,14 +4,14 @@
 - `pip install -r requirements.txt`
 
 
-#### 2. Run the scraper for specific time window
+#### 2. Run the scraper for specific time window and to crawl a /subreddit
 
 - `python scrape_reddit.py --subreddit memes --before 1663673457 --after 1641036174`
 
 
 
 
-Resources:
+#### Resources:
 
 - To convert a particular datetime into unix timestamp: https://www.epochconverter.com/
 - Top communities on reddit: https://www.reddit.com/best/communities/1/
