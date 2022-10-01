@@ -10,8 +10,27 @@
 
 
 
+# Collect Data from:
+- https://www.instagram.com/memedefsg/?hl=en
+- Singapore Defence HP 
+- Asia Defence HP 
+- Singapore HP 
+- UkraineRussia P 
+- 
 
 #### Resources:
 
 - To convert a particular datetime into unix timestamp: https://www.epochconverter.com/
 - Top communities on reddit: https://www.reddit.com/best/communities/1/
+
+Host socialai-proxy
+    User <username>
+    Hostname 188.166.239.193
+    IdentityFile <private_key_filepath>
+
+Host socialai-prata
+    User <username>
+    Hostname localhost
+    Port 9000
+    ProxyJump socialai-proxy
+    IdentityFile <private_key_filepath>
