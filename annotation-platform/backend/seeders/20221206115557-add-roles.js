@@ -14,12 +14,12 @@ module.exports = {
     */
     const currentTime = new Date(new Date().toUTCString()).toISOString();
 
-    await queryInterface.bulkInsert('Role', [{
-      name: "Annotator",
+    await queryInterface.bulkInsert('Roles', [{
+      name: "annotator",
       createdAt: currentTime,
       updatedAt: currentTime
     }, {
-      name: "Administrator",
+      name: "admin",
       createdAt: currentTime,
       updatedAt: currentTime
     }], {});
@@ -32,10 +32,10 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('Role', [{
-      name: "Annotator"
+    await queryInterface.bulkDelete('Roles', [{
+      name: "annotator"
     }, {
-      name: "Administrator"
+      name: "admin"
     }], {});
   }
 };
