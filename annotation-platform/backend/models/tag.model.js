@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
 
       Tag.belongsToMany(models.Screening, {
-        through: "TopicTags",
+        through: "ScreeningTag",
         foreignKey: "tagId",
         otherKey: "screeningId"
       });

@@ -6,10 +6,14 @@ const { INTEGER } = require('sequelize');
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Screenings', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
       memeId: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
-        allowNull: false,
         references: {
           model: 'Memes', // name of Target model
           key: 'id', // key in Target model that we're referencing
@@ -19,8 +23,6 @@ module.exports = {
       },
       annotatorId: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
-        allowNull: false,
         references: {
           model: 'Users', // name of Target model
           key: 'id', // key in Target model that we're referencing
@@ -50,7 +52,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    }).then(() => queryInterface.addIndex('Screenings', {
+      fields: ['annotatorId', 'memeId'],
+      unique: true
+    }));
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Screenings');

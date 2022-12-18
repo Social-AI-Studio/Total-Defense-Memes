@@ -3,6 +3,8 @@ const db = require("../models");
 const Meme = db.Meme;
 const Batch = db.Batch;
 const Screening = db.Screening;
+const Tag = db.Tag;
+const Op = db.Sequelize.Op;
 
 const create = async (req, res) => {
 
@@ -12,7 +14,7 @@ const create = async (req, res) => {
       name: req.body.batchName
     },
     include: [{
-      model:Meme, as: "memes"
+      model: Meme, as: "memes"
     }]
   }).then((batch) => {
     console.log(batch.memes.length)
@@ -27,9 +29,9 @@ const create = async (req, res) => {
     });
 
     return Screening.bulkCreate(screenings)
-  }).then((_) => { 
+  }).then((_) => {
     res.status(200).send({
-      message:"OK",
+      message: "OK",
     });
   })
 };
@@ -37,23 +39,38 @@ const create = async (req, res) => {
 const update = async (req, res) => {
 
   // Fetch the memes within the indicated batch
-  console.log(req.body.screeningId)
-  Screening.findOne({
+  const screeningPromise = Screening.findOne({
     where: {
       annotatorId: req.body.annotatorId,
       memeId: req.body.memeId
+    },
+    include: [
+      {
+        model: Tag
+      }
+    ]
+  })
+  
+  const tagPromise = Tag.findAll({
+    where: {
+      id: {
+        [Op.in]: req.body.topicTags
+      }
     }
-  }).then((screening) => {
+  })
+  
+  Promise.all([screeningPromise, tagPromise]).then(function(results) {
+    let screening = results[0];
+    let tags = results[1];
+
     console.log(screening)
-    // Create screenings
+
+    // Update screening
     screening.contentType = req.body.contentType;
     screening.relatedCountry = req.body.relatedCountry;
     screening.flagged = req.body.flagged;
+    screening.setTags(tags)
 
-    console.log(screening)
-    return screening.save()
-  }).then((screening) => {
-    console.log(screening) 
     res.status(200).send({
       message: "OK",
     });

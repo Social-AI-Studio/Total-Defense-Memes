@@ -19,21 +19,26 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "memeId"
       });
 
-      Screening.belongsToMany(models.User, {
-        through: "UserRoles",
-        foreignKey: "roleId",
-        otherKey: "userId"
+      Screening.belongsToMany(models.Tag, {
+        through: "ScreeningTag",
+        foreignKey: "screeningId",
+        otherKey: "tagId"
       });
     }
   }
   Screening.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     annotatorId: {
       type: DataTypes.INTEGER,
-      primaryKey: true
+      unique: "annotatorMeme"
     },
     memeId: {
       type: DataTypes.INTEGER,
-      primaryKey: true
+      unique: "annotatorMeme"
     },
     contentType: DataTypes.INTEGER,
     relatedCountry: DataTypes.INTEGER,
