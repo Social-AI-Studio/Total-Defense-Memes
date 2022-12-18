@@ -27,65 +27,44 @@ const create = async (req, res) => {
     });
 
     return Screening.bulkCreate(screenings)
-  }).then((screenings) => { 
+  }).then((_) => { 
     res.status(200).send({
       message:"OK",
     });
   })
+};
 
-  // Screening.create({
-  //   annotatorId: req.body.annotatorId,
-  //   memeId: req.body.memeId,
-  // })
+const update = async (req, res) => {
 
-  // fs.createReadStream(path)
-  //   .pipe(csv.parse({ headers: true }))
-  //   .on("error", (error) => {
-  //     throw error.message;
-  //   })
-  //   .on("data", (row) => {
-  //     batches.add(row['batch'])
-  //     memes.push(row)
-  //   })
-  //   .on("end", () => {
+  // Fetch the memes within the indicated batch
+  console.log(req.body.screeningId)
+  Screening.findOne({
+    where: {
+      annotatorId: req.body.annotatorId,
+      memeId: req.body.memeId
+    }
+  }).then((screening) => {
+    console.log(screening)
+    // Create screenings
+    screening.contentType = req.body.contentType;
+    screening.relatedCountry = req.body.relatedCountry;
+    screening.flagged = req.body.flagged;
 
-  //     // Create batches
-  //     var batchObjects = []
-  //     batches.forEach(x => {
-  //       batchObjects.push({
-  //         "name": x
-  //       })
-  //     });
-
-  //     Batch.bulkCreate(batchObjects).then((batches) => {
-
-  //       // Remap batches
-  //       var batch2Id = {}
-  //       batches.forEach(element => {
-  //         batch2Id[element.name] = element.id
-  //       });
-
-  //       // Update meme objects
-  //       for (let i = 0; i < memes.length; i++) {
-  //         const element = memes[i];
-  //         element['batchId'] = batch2Id[element['batch']]
-  //       }
-
-  //       return Meme.bulkCreate(memes)
-  //     }).then((memes) => {
-  //       res.status(200).send({
-  //         message:
-  //           "Uploaded the file successfully: " + req.file.originalname,
-  //       });
-  //     }).catch((err) => {
-  //       console.log(err)
-  //       res.status(500).send({
-  //         message: err,
-  //       });
-  //     })
-  //   });
+    console.log(screening)
+    return screening.save()
+  }).then((screening) => {
+    console.log(screening) 
+    res.status(200).send({
+      message: "OK",
+    });
+  }).catch((err) => {
+    res.status(500).send({
+      message: err
+    })
+  })
 };
 
 module.exports = {
-  create
+  create,
+  update
 };

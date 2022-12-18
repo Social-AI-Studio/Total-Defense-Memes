@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       Screening.belongsTo(models.Meme, {
         foreignKey: "memeId"
       });
+
+      Screening.belongsToMany(models.User, {
+        through: "UserRoles",
+        foreignKey: "roleId",
+        otherKey: "userId"
+      });
     }
   }
   Screening.init({

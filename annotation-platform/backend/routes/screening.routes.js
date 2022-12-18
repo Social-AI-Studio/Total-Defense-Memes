@@ -10,5 +10,5 @@ module.exports = function(app) {
   });
 
   app.post("/api/screening/create", controller.create);
-  // app.get("/api/meme",  controller.getMemes);
+  app.put("/api/screening/update", controller.update);
 };
