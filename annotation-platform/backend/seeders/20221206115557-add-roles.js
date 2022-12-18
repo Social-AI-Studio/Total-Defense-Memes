@@ -15,11 +15,11 @@ module.exports = {
     const currentTime = new Date(new Date().toUTCString()).toISOString();
 
     await queryInterface.bulkInsert('Roles', [{
-      name: "annotator",
+      name: "admin",
       createdAt: currentTime,
       updatedAt: currentTime
     }, {
-      name: "admin",
+      name: "annotator",
       createdAt: currentTime,
       updatedAt: currentTime
     }], {});
