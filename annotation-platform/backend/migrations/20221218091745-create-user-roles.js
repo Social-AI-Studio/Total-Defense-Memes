@@ -5,6 +5,7 @@ module.exports = {
     await queryInterface.createTable('UserRoles', {
       roleId: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
         allowNull: false,
         references: {
           model: 'Roles', // name of Target model
@@ -15,6 +16,7 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
         allowNull: false,
         references: {
           model: 'Users', // name of Target model
