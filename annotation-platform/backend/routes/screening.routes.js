@@ -10,5 +10,5 @@ module.exports = function(app) {
   });
 
   app.post("/api/screening/create", controller.create);
-  app.put("/api/screening/update", controller.update);
+  app.put("/api/screening/:screeningId", controller.update);
 };

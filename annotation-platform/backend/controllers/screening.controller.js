@@ -41,15 +41,10 @@ const update = async (req, res) => {
   // Fetch the memes within the indicated batch
   const screeningPromise = Screening.findOne({
     where: {
-      annotatorId: req.body.annotatorId,
-      memeId: req.body.memeId
-    },
-    include: [
-      {
-        model: Tag
-      }
-    ]
+      id: req.params.screeningId,
+    }
   })
+  console.log(req.params.screeningId)
   
   const tagPromise = Tag.findAll({
     where: {
@@ -62,8 +57,6 @@ const update = async (req, res) => {
   Promise.all([screeningPromise, tagPromise]).then(function(results) {
     let screening = results[0];
     let tags = results[1];
-
-    console.log(screening)
 
     // Update screening
     screening.contentType = req.body.contentType;
