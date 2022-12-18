@@ -3,6 +3,7 @@ const db = require("../models");
 const Meme = db.Meme;
 const Batch = db.Batch;
 const Screening = db.Screening;
+const Pillar = db.Pillar;
 const Tag = db.Tag;
 const Op = db.Sequelize.Op;
 
@@ -42,10 +43,11 @@ const update = async (req, res) => {
   const screeningPromise = Screening.findOne({
     where: {
       id: req.params.screeningId,
-    }
+    }, include: [
+      { model: Pillar }
+    ]
   })
-  console.log(req.params.screeningId)
-  
+
   const tagPromise = Tag.findAll({
     where: {
       id: {
@@ -53,16 +55,35 @@ const update = async (req, res) => {
       }
     }
   })
-  
-  Promise.all([screeningPromise, tagPromise]).then(function(results) {
+
+  const pillarPromise = Pillar.findAll({
+    where: {
+      id: {
+        [Op.in]: req.body.pillars
+      }
+    }
+  })
+
+  Promise.all([screeningPromise, tagPromise, pillarPromise]).then(function (results) {
     let screening = results[0];
     let tags = results[1];
+    let pillars = results[2];
+
+    console.log(screening)
 
     // Update screening
     screening.contentType = req.body.contentType;
     screening.relatedCountry = req.body.relatedCountry;
     screening.flagged = req.body.flagged;
     screening.setTags(tags)
+    
+    screening.removePillars(screening.Pillars)
+    for (let i = 0; i < pillars.length; i++) {
+      const element = pillars[i];
+      screening.addPillar(element, { through: { stance: req.body.stance[i] } })
+    }
+
+    screening.save()
 
     res.status(200).send({
       message: "OK",
