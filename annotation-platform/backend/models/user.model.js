@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         otherKey: "roleId"
       });
+
+      User.hasMany(models.Screening, { 
+        foreignKey: "annotatorId",
+        as: "screenings" 
+      });
     }
   };
   User.init({

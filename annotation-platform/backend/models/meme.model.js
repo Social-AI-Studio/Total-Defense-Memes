@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       Meme.belongsTo(models.Batch, {
         foreignKey: "batchId"
       });
+
+      Meme.hasMany(models.Screening, { 
+        foreignKey: "memeId",
+        as: "screenings" 
+      });
     }
   };
   Meme.init({
