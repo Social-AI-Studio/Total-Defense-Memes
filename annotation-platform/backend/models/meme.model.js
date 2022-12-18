@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Meme.belongsTo(models.Batch);
+      Meme.belongsTo(models.Batch, {
+        foreignKey: "batchId"
+      });
     }
   };
   Meme.init({

@@ -45,7 +45,7 @@ const upload = async (req, res) => {
           // Update meme objects
           for (let i = 0; i < memes.length; i++) {
             const element = memes[i];
-            element['BatchId'] = batch2Id[element['batch']]
+            element['batchId'] = batch2Id[element['batch']]
           }
 
           return Meme.bulkCreate(memes)

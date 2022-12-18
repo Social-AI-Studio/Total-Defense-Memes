@@ -11,7 +11,7 @@ module.exports = {
      */
     return queryInterface.addColumn(
       'Memes', // name of Source model
-      'BatchId', // name of the key we're adding 
+      'batchId', // name of the key we're adding 
       {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -34,7 +34,7 @@ module.exports = {
      */
     return queryInterface.removeColumn(
       'Memes', // name of Source model
-      'BatchId' // key we want to remove
+      'batchId' // key we want to remove
     );
   }
 
