@@ -30,6 +30,7 @@ db.sequelize.sync();
 require('./routes/auth.routes')(app);
 require('./routes/meme.routes')(app);
 require('./routes/screening.routes')(app);
+require('./routes/tag.routes')(app);
 
 app.use('/img', express.static(__dirname + '/dataset/img'))
 
