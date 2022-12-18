@@ -20,6 +20,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "annotatorId",
         as: "screenings" 
       });
+
+      User.belongsToMany(models.Batch, {
+        through: "UserBatch",
+        foreignKey: "userId",
+        otherKey: "batchId",
+        as: "batches"
+      });
     }
   };
   User.init({

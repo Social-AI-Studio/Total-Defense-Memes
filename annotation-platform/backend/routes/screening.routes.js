@@ -1,3 +1,4 @@
+const { authJwt } = require("../middleware");
 const controller = require("../controllers/screening.controller");
 
 module.exports = function(app) {
@@ -9,6 +10,8 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/screening/create", controller.create);
-  app.put("/api/screening/:screeningId", controller.update);
+  app.post("/api/screening/create", [authJwt.verifyToken, authJwt.isAdmin], controller.create);
+  app.put("/api/screening/:screeningId", [authJwt.verifyToken, authJwt.isAnnotator], controller.update);
+  app.get("/api/screening/:batchId", [authJwt.verifyToken, authJwt.isAnnotator], controller.fetch);
+  app.get("/api/screening", [authJwt.verifyToken, authJwt.isAnnotator], controller.fetchAll);
 };

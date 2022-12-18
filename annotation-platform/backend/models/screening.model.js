@@ -12,11 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Screening.belongsTo(models.User, {
-        foreignKey: "annotatorId"
+        foreignKey: "annotatorId",
+        as: "annotators"
       });
 
       Screening.belongsTo(models.Meme, {
-        foreignKey: "memeId"
+        foreignKey: "memeId",
+        as: "memes"
       });
 
       Screening.belongsToMany(models.Tag, {

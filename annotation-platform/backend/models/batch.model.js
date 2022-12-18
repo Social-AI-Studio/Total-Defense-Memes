@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "batchId", 
         as: "memes" 
       });
+
+      Batch.belongsToMany(models.User, {
+        through: "UserBatch",
+        foreignKey: "batchId",
+        otherKey: "userId"
+      });
     }
   };
   Batch.init({
