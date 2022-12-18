@@ -14,10 +14,16 @@ module.exports = {
     */
     const currentTime = new Date(new Date().toUTCString()).toISOString();
 
-    await queryInterface.bulkInsert('User', [{
+    await queryInterface.bulkInsert('Users', [{
       username: "mshee",
-      password: "123456789",
-      updatePassword: 1,
+      password: "Rum1005844!",
+      updatePassword: 0,
+      createdAt: currentTime,
+      updatedAt: currentTime
+    },{
+      username: "nirmal",
+      password: "Rum03408!",
+      updatePassword: 0,
       createdAt: currentTime,
       updatedAt: currentTime
     }], {});
@@ -30,8 +36,10 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('User', [{
+    await queryInterface.bulkDelete('Users', [{
       username: "mshee"
+    },{
+      username: "nirmal"
     }], {});
   }
 };
