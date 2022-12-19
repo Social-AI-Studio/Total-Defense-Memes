@@ -45,9 +45,11 @@ const create = async (req, res) => {
       })
     });
 
-    shuffleArray(screenings)
+    let shuffledScreenings = screenings.sort(function () {
+      return Math.random() - 0.5;
+    });
 
-    await Screening.bulkCreate(screenings)
+    await Screening.bulkCreate(shuffledScreenings)
 
     // add batch to user
     user.addBatch(batch)
