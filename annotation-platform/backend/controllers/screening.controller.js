@@ -105,6 +105,9 @@ const update = async (req, res) => {
     let tags = results[1];
     let pillars = results[2];
 
+    // Save Text
+    screening.text = req.body.text
+
     if (screening.relatedCountry) {
       screening.removePillars(screening.Pillars)
       for (let i = 0; i < pillars.length; i++) {
