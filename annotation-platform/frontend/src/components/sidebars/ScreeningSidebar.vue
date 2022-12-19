@@ -3,25 +3,6 @@
     class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white w-100"
   >
     <div v-if="stageLoaded" class="border p-1"> 
-      <div
-        class="
-          d-flex
-          align-items-center
-          flex-shrink-0
-          p-3
-          link-dark
-          text-decoration-none
-          border-bottom
-          sidebar-header
-          bg-info
-          text-white
-        "
-      >
-        <div class="d-flex w-100 justify-content-between">
-          <strong>{{ this.stage.name }}</strong>
-          <i>{{ this.stage.currentCount }} / {{ this.stage.totalCount }}</i>
-        </div>
-      </div>
       <div class="d-flex w-100 align-items-center p-2">
         Show:
         <b-select
@@ -35,14 +16,14 @@
 
       <div class="wrapper">
         <b-list-group v-if="stageLoaded">
-          <image-sidebar-item
+          <screening-sidebar-item
             :class="{ active: activeIndex === index }"
             v-for="(item, index) in items"
             :key="index"
             v-bind:index="index"
             v-bind:item="item"
             v-on:onTabSelected="$emit('onItemChange', index)"
-          ></image-sidebar-item>
+          ></screening-sidebar-item>
         </b-list-group>
       </div>
     </div>
@@ -53,13 +34,13 @@
 
 <script>
 import { Settings } from "../../config/api.config";
-import ImageSidebarItem from "./ImageSideBarItem.vue";
+import ScreeningSidebarItem from "./ScreeningSidebarItem.vue";
 
 export default {
   name: "image-sidebar",
-  props: ["stage", "stageLoaded", "items", "itemLoaded", "activeIndex"],
+  props: ["stageLoaded", "items", "activeIndex"],
   components: {
-    "image-sidebar-item": ImageSidebarItem,
+    "screening-sidebar-item": ScreeningSidebarItem,
   },
   data() {
     return {

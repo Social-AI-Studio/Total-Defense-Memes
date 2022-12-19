@@ -3,7 +3,7 @@
     <b-container class="bv-example-row" id="nav" fluid>
       <b-row>
         <b-col>
-          <router-link to="/stages">
+          <router-link to="/batches">
             <img
               style="height: 40%; object-fit: contain"
               alt="Vue logo"

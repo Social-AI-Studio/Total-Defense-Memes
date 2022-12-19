@@ -24,34 +24,16 @@ const routes = [
     component: Login
   },
   {
-    path: '/stages',
-    name: 'stages',
+    path: '/batches',
+    name: 'batches',
     beforeEnter: requireAuth,
-    component: () => import(/* webpackChunkName: "about" */ '../views/Stage.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Batches.vue')
   },
   {
-    path: '/annotations/:stageId',
-    name: 'annotations',
+    path: '/batch/:batchId',
+    name: 'batch',
     beforeEnter: requireAuth,
-    component: () => import(/* webpackChunkName: "about" */ '../views/Annotation.vue')
-  },
-  {
-    path: '/consolidations/:stageId',
-    name: 'consolidations',
-    beforeEnter: requireAuth,
-    component: () => import(/* webpackChunkName: "about" */ '../views/Consolidation.vue')
-  },
-  {
-    path: '/explanations/:stageId',
-    name: 'explanations',
-    beforeEnter: requireAuth,
-    component: () => import(/* webpackChunkName: "about" */ '../views/Explanation.vue')
-  },
-  {
-    path: '/explanationevaluations/:stageId',
-    name: 'explanationevaluations',
-    beforeEnter: requireAuth,
-    component: () => import(/* webpackChunkName: "about" */ '../views/ExplanationEvaluation.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Batch.vue')
   },
   {
     path: '/logout',
