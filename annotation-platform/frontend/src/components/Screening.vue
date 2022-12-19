@@ -48,7 +48,7 @@
 
     <p class="mt-4 mb-1 p-0"><b>Text:</b></p>
     <b-input-group>
-      <b-form-textarea id="remarks-input" v-model="item.remarks" rows="3" max-rows="100">{{ this.item.text
+      <b-form-textarea id="remarks-input" v-model="item.text" rows="3" max-rows="100">{{ this.item.text
       }}</b-form-textarea>
     </b-input-group>
 
@@ -199,15 +199,6 @@ export default {
         selectedStance.push(this.stance[idx])
       }
 
-      // const body = new URLSearchParams({
-      //   contentType: this.contentType,
-      //   relatedCountry: this.relatedCountry,
-      //   topicTags: tags,
-      //   pillars: selectedPillars,
-      //   stance: selectedStance,
-      //   flagged: this.flagged,
-      // });
-      
       const body = {
         contentType: this.contentType,
         relatedCountry: this.relatedCountry,
@@ -215,6 +206,7 @@ export default {
         pillars: selectedPillars,
         stance: selectedStance,
         flagged: this.flagged,
+        text: this.item.text
       };
 
       const config = {
@@ -240,6 +232,15 @@ export default {
       if (res.status === 200) {
         this.item.updatedAt = moment().utc().format();
         this.$emit("onSaveClick");
+
+        this.checkedPillars = [];
+        this.contentType = null;
+        this.relatedCountry = null;
+        this.topicTags = [];
+        this.flagged = false;
+        this.stance = [
+          null, null, null, null, null, null, null
+        ];
       }
     },
   },
