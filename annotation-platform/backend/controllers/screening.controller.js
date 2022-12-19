@@ -11,7 +11,7 @@ const User = db.User;
 const create = async (req, res) => {
 
   // Fetch the memes within the indicated batch
-  var userPromise = User.findByPk(req.userId)
+  var userPromise = User.findByPk(req.body.annotatorId)
 
   var batchPromise = Batch.findOne({
     where: {
