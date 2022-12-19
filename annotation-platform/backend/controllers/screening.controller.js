@@ -165,7 +165,11 @@ const fetch = async (req, res) => {
     }, {
       model: ScreeningPillar,
       as: "pillars"
-    }]
+    },
+    ],
+    order: [
+      ['id', 'ASC']
+    ]
   }).then((screenings) => {
     console.log(screenings[0].memes)
 
