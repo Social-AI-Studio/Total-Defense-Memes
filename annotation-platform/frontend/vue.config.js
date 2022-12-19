@@ -1,4 +1,4 @@
 module.exports = {
-	publicPath: '/reasoning/',
+	publicPath: '/sgmemes/',
 	outputDir: 'dist'
 }

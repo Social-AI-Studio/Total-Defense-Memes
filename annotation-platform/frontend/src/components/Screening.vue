@@ -8,7 +8,7 @@
           form</em></small></p>
     <div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="flaggingCheckbox" v-model="flagged">
+        <input class="form-check-input" type="checkbox" id="flaggingCheckbox" v-model="item.flagged">
         <label class="form-check-label" for="flaggingCheckbox">I'll think about this later!</label>
       </div>
     </div>
@@ -18,34 +18,34 @@
     <div>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="contentTypeOptions" id="memeRadio" value="1"
-          v-model="contentType">
+          v-model="item.contentType">
         <label class="form-check-label" for="memeRadio">Meme</label>
       </div>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="contentTypeOptions" id="nonMemeRadio" value="0"
-          v-model="contentType">
+          v-model="item.contentType">
         <label class="form-check-label" for="nonMemeRadio">Non-Meme</label>
       </div>
     </div>
 
-    <div v-if="contentType == 1">
+    <div v-if="item.contentType == 1">
       <p class="mt-4 mb-0 p-0"><b>Related Country</b></p>
       <p class="mt-0 mb-2 p-0"><small>Do you regard the visual as a Singapore meme?</small></p>
       <div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" name="relatedCountryOptions" id="sgRadio" value="1"
-            v-model="relatedCountry">
+            v-model="item.relatedCountry">
           <label class="form-check-label" for="sgRadio">Singapore Meme</label>
         </div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" name="relatedCountryOptions" id="nonSGRadio" value="0"
-            v-model="relatedCountry">
+            v-model="item.relatedCountry">
           <label class="form-check-label" for="nonSGRadio">Non-Singapore Meme</label>
         </div>
       </div>
     </div>
 
-    <div v-if="(contentType == 1 && relatedCountry == 1)">
+    <div v-if="(item.contentType == 1 && item.relatedCountry == 1)">
       <p class="mt-4 mb-1 p-0"><b>Text:</b></p>
       <b-input-group>
         <b-form-textarea id="remarks-input" v-model="item.text" rows="3" max-rows="100">{{ this.item.text
@@ -56,7 +56,7 @@
       <p class="mt-0 mb-2 p-0"><small>Would you classify this visual under any of the Total Defence Pillars?</small></p>
       <div>
         <div class="form-check" v-for="(pillar, idx) in pillars" :key="pillar">
-          <input class="form-check-input" type="checkbox" :id="pillar" v-model="checkedPillars" :value="idx">
+          <input class="form-check-input" type="checkbox" :id="pillar" v-model="item.pillars" :value="idx">
           <label class="form-check-label" :for="pillar">{{ pillar }}</label>
         </div>
       </div>
@@ -66,7 +66,7 @@
           in
           the meme.
         </small></p>
-      <b-form-tags v-model="topicTags" no-outer-focus class="mb-2">
+      <b-form-tags v-model="item.tags" no-outer-focus class="mb-2">
         <template v-slot="{ tags, inputAttrs, inputHandlers, tagVariant, addTag, removeTag }">
           <b-input-group class="mb-2">
             <b-form-input v-bind="inputAttrs" v-on="inputHandlers" placeholder="New tag - Press enter to add"
@@ -86,21 +86,21 @@
       <p class="mt-0 mb-2 p-0"><small>Indicate whether the meme is against, neutral or supportive towards the identified
           pillars
         </small></p>
-      <div class="mt-2 mb-2" v-for="p in checkedPillars" :key="pillars[p]">
+      <div class="mt-2 mb-2" v-for="p in item.pillars" :key="pillars[p]">
         {{ pillars[p] }}
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="1" :id="'againstRadio' + p"
-            v-model="stance[p]">
+            v-model="item.stance[p]">
           <label class="form-check-label" :for="'againstRadio' + p">Against</label>
         </div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="2" :id="'neutralRadio' + p"
-            v-model="stance[p]">
+            v-model="item.stance[p]">
           <label class="form-check-label" :for="'neutralRadio' + p">Neutral</label>
         </div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="3" :id="'supportRadio' + p"
-            v-model="stance[p]">
+            v-model="item.stance[p]">
           <label class="form-check-label" :for="'supportRadio' + p">Supportive</label>
         </div>
       </div>
@@ -132,19 +132,14 @@ export default {
 
       topictags: ["Singapore Armed Forces (SAF)", "Singapore Civil Defence Force (SCDF)"],
 
-      checkedPillars: [],
-      contentType: null,
-      relatedCountry: null,
-      topicTags: [],
-      flagged: false,
-      stance: [
-        null, null, null, null, null, null, null
-      ],
+      // stance: [
+      //   null, null, null, null, null, null, null
+      // ],
     };
   },
   computed: {
     imagepath: function () {
-      return `${Settings.PROTOCOL}://${Settings.HOST}:${Settings.PORT}/img/${this.item.memes.filename}`;
+      return `${Settings.PROTOCOL}://${Settings.HOST}:${Settings.PORT}/img/${this.item.filename}`;
     }
   },
   methods: {
@@ -177,11 +172,11 @@ export default {
     async onSaveButton() {
 
       var msg = ""
-      if (this.contentType == null) {
+      if (this.item.contentType == null) {
         msg += "Please decide whether this visual is a meme or non-meme\n"
       }
 
-      if (this.relatedCountry == null) {
+      if (this.item.relatedCountry == null) {
         msg += "Please decide whether this visual is a Singapore-related meme. \n"
       }
 
@@ -193,23 +188,23 @@ export default {
       const selectedPillars = [];
       const selectedStance = [];
       const tags = [];
-      if (this.contentType == 1 && this.relatedCountry == 1) {
+      if (this.item.contentType == 1 && this.item.relatedCountry == 1) {
         // Create the tags
-        for (let i = 0; i < this.topicTags.length; i++) {
-          const element = this.topicTags[i];
+        for (let i = 0; i < this.item.tags.length; i++) {
+          const element = this.item.tags[i];
           const tagId = await this.createTag(element)
           tags.push(tagId);
         }
 
         // Check whether the boxes are filled up
-        for (let i = 0; i < this.checkedPillars.length; i++) {
-          selectedPillars.push(this.checkedPillars[i] + 1)
+        for (let i = 0; i < this.item.pillars.length; i++) {
+          selectedPillars.push(this.item.pillars[i] + 1)
         }
 
-        for (let i = 0; i < this.checkedPillars.length; i++) {
-          const idx = this.checkedPillars[i]
-          if (this.stance[idx] != null) {
-            selectedStance.push(this.stance[idx])
+        for (let i = 0; i < this.item.pillars.length; i++) {
+          const idx = this.item.pillars[i]
+          if (this.item.stance[idx] != null) {
+            selectedStance.push(this.item.stance[idx])
           }
         }
 
@@ -232,12 +227,12 @@ export default {
       }
 
       const body = {
-        contentType: this.contentType,
-        relatedCountry: this.relatedCountry,
+        contentType: this.item.contentType,
+        relatedCountry: this.item.relatedCountry,
         topicTags: tags,
         pillars: selectedPillars,
         stance: selectedStance,
-        flagged: this.flagged,
+        flagged: this.item.flagged,
         text: this.item.text
       };
 
@@ -264,15 +259,6 @@ export default {
       if (res.status === 200) {
         this.item.updatedAt = moment().utc().format();
         this.$emit("onSaveClick");
-
-        this.checkedPillars = [];
-        this.contentType = null;
-        this.relatedCountry = null;
-        this.topicTags = [];
-        this.flagged = false;
-        this.stance = [
-          null, null, null, null, null, null, null
-        ];
       }
     },
   },
