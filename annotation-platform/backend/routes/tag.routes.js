@@ -1,3 +1,4 @@
+const { authJwt } = require("../middleware");
 const controller = require("../controllers/tag.controller");
 
 module.exports = function(app) {
@@ -9,6 +10,6 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/tag/create", controller.create);
-  app.get("/api/tags",  controller.fetch);
+  app.post("/api/tag/create", [authJwt.verifyToken, authJwt.isAnnotator] ,controller.create);
+  app.get("/api/tags", [authJwt.verifyToken, authJwt.isAnnotator],  controller.fetch);
 };

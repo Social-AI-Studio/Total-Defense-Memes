@@ -26,10 +26,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => queryInterface.addIndex('Tags', {
-      fields: ['annotatorId', 'name'],
-      unique: true
-    }));
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Tags');
