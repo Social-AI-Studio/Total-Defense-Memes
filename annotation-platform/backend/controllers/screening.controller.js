@@ -10,6 +10,13 @@ const Op = db.Sequelize.Op;
 const User = db.User;
 const ScreeningPillar = db.ScreeningPillar
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 const create = async (req, res) => {
 
   // Fetch the memes within the indicated batch
@@ -38,6 +45,8 @@ const create = async (req, res) => {
       })
     });
 
+    shuffleArray(screenings)
+
     await Screening.bulkCreate(screenings)
 
     // add batch to user
@@ -58,7 +67,6 @@ let getBreakChainError = () => {
 const update = async (req, res) => {
 
   // Fetch the memes within the indicated batch
-
   Screening.findOne({
     where: {
       id: req.params.screeningId,
@@ -120,11 +128,8 @@ const update = async (req, res) => {
         screening.addPillar(element, { through: { stance: req.body.stance[i] } })
       }
 
-      console.log("num tags:", tags.length)
       screening.setTags(tags)
     }
-
-    console.log("HERE!!")
 
     await screening.save()
 
