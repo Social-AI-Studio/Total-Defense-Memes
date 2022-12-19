@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "screenings" 
       });
 
+      User.hasMany(models.Tag, { 
+        foreignKey: "annotatorId",
+        as: "tags" 
+      });
+
       User.belongsToMany(models.Batch, {
         through: "UserBatch",
         foreignKey: "userId",

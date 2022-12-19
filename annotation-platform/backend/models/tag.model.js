@@ -17,12 +17,19 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "tagId",
         otherKey: "screeningId"
       });
+
+      Tag.belongsTo(models.User, {
+        foreignKey: "annotatorId",
+        as: "annotator"
+      });
     }
   }
   Tag.init({
     name: {
       type: DataTypes.STRING,
-      unique: true
+    },
+    annotatorId: {
+      type:DataTypes.INTEGER,
     }
   }, {
     sequelize,

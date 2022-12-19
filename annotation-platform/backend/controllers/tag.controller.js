@@ -6,7 +6,8 @@ const Op = db.Sequelize.Op;
 const create = async (req, res) => {
   // Fetch the memes within the indicated batch
   Tag.create({
-    name: req.body.tagName
+    name: req.body.tagName,
+    annotatorId: req.userId
   }).then(() => {
     res.status(200).send({
       message:"OK",
@@ -24,7 +25,8 @@ const fetch = async (req, res) => {
     where: {
       name: {
         [Op.like]: '%' + req.body.query + '%'
-      }
+      },
+      annotatorId: req.userId
     }
   }).then((tags) => {
     res.status(200).send({
