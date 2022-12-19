@@ -31,7 +31,8 @@ const create = async (req, res) => {
     batch.memes.forEach(element => {
       screenings.push({
         annotatorId: req.body.annotatorId,
-        memeId: element.id
+        memeId: element.id,
+        text: meme.text
       })
     });
 

@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       unique: "annotatorMeme"
     },
+    text: DataTypes.STRING,
     contentType: DataTypes.INTEGER,
     relatedCountry: DataTypes.INTEGER,
     flagged: DataTypes.INTEGER

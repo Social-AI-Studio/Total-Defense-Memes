@@ -30,6 +30,9 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      text: {
+        type: Sequelize.STRING
+      },
       contentType: {
         type: Sequelize.INTEGER
       },
@@ -37,10 +40,6 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       flagged: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
-      visibility: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
