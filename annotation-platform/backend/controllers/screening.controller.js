@@ -32,7 +32,7 @@ const create = async (req, res) => {
       screenings.push({
         annotatorId: req.body.annotatorId,
         memeId: element.id,
-        text: meme.text
+        text: element.text
       })
     });
 
