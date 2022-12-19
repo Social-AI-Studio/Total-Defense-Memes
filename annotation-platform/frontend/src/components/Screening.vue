@@ -28,75 +28,81 @@
       </div>
     </div>
 
-    <p class="mt-4 mb-0 p-0"><b>Related Country</b></p>
-    <p class="mt-0 mb-2 p-0"><small>Do you regard the visual as a Singapore meme?</small></p>
-    <div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="relatedCountryOptions" id="sgRadio" value="1"
-          v-model="relatedCountry">
-        <label class="form-check-label" for="sgRadio">Singapore Meme</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="relatedCountryOptions" id="nonSGRadio" value="0"
-          v-model="relatedCountry">
-        <label class="form-check-label" for="nonSGRadio">Non-Singapore Meme</label>
-      </div>
-    </div>
-
-    <p class="mt-4 mb-1 p-0"><b>Text:</b></p>
-    <b-input-group>
-      <b-form-textarea id="remarks-input" v-model="item.text" rows="3" max-rows="100">{{ this.item.text
-      }}</b-form-textarea>
-    </b-input-group>
-
-    <p class="mt-4 mb-0 p-0"><b>Defence Pillar(s)</b></p>
-    <p class="mt-0 mb-2 p-0"><small>Would you classify this visual under any of the Total Defence Pillars?</small></p>
-    <div>
-      <div class="form-check" v-for="(pillar, idx) in pillars" :key="pillar">
-        <input class="form-check-input" type="checkbox" :id="pillar" v-model="checkedPillars" :value="idx">
-        <label class="form-check-label" :for="pillar">{{ pillar }}</label>
-      </div>
-    </div>
-
-    <p class="mt-4 mb-0 p-0"><b>Topic Tags</b></p>
-    <p class="mt-0 mb-2 p-0"><small>The tags should capture all the essential elements being illustrated or mentioned in
-        the meme.
-      </small></p>
-    <b-form-tags v-model="topicTags" no-outer-focus class="mb-2">
-      <template v-slot="{ tags, inputAttrs, inputHandlers, tagVariant, addTag, removeTag }">
-        <b-input-group class="mb-2">
-          <b-form-input v-bind="inputAttrs" v-on="inputHandlers" placeholder="New tag - Press enter to add"
-            class="form-control"></b-form-input>
-          <b-input-group-append>
-            <b-button @click="addTag()" variant="primary">Add</b-button>
-          </b-input-group-append>
-        </b-input-group>
-        <div class="d-inline-block" style="font-size: 1.5rem;">
-          <b-form-tag v-for="tag in tags" @remove="removeTag(tag)" :key="tag" :title="tag" :variant="tagVariant"
-            class="mr-1">{{ tag }}</b-form-tag>
+    <div v-if="contentType == 1">
+      <p class="mt-4 mb-0 p-0"><b>Related Country</b></p>
+      <p class="mt-0 mb-2 p-0"><small>Do you regard the visual as a Singapore meme?</small></p>
+      <div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="relatedCountryOptions" id="sgRadio" value="1"
+            v-model="relatedCountry">
+          <label class="form-check-label" for="sgRadio">Singapore Meme</label>
         </div>
-      </template>
-    </b-form-tags>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="relatedCountryOptions" id="nonSGRadio" value="0"
+            v-model="relatedCountry">
+          <label class="form-check-label" for="nonSGRadio">Non-Singapore Meme</label>
+        </div>
+      </div>
+    </div>
 
-    <p class="mt-4 mb-0 p-0"><b>Stance</b></p>
-    <p class="mt-0 mb-2 p-0"><small>Indicate whether the meme is against, neutral or supportive towards the identified
-        pillars
-      </small></p>
-    <div class="mt-2 mb-2" v-for="p in checkedPillars">
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="1" :id="'againstRadio' + p"
-          v-model="stance[p]">
-        <label class="form-check-label" :for="'againstRadio' + p">Against</label>
+    <div v-if="(contentType == 1 && relatedCountry == 1)">
+      <p class="mt-4 mb-1 p-0"><b>Text:</b></p>
+      <b-input-group>
+        <b-form-textarea id="remarks-input" v-model="item.text" rows="3" max-rows="100">{{ this.item.text
+        }}</b-form-textarea>
+      </b-input-group>
+
+      <p class="mt-4 mb-0 p-0"><b>Defence Pillar(s)</b></p>
+      <p class="mt-0 mb-2 p-0"><small>Would you classify this visual under any of the Total Defence Pillars?</small></p>
+      <div>
+        <div class="form-check" v-for="(pillar, idx) in pillars" :key="pillar">
+          <input class="form-check-input" type="checkbox" :id="pillar" v-model="checkedPillars" :value="idx">
+          <label class="form-check-label" :for="pillar">{{ pillar }}</label>
+        </div>
       </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="2" :id="'neutralRadio' + p"
-          v-model="stance[p]">
-        <label class="form-check-label" :for="'neutralRadio' + p">Neutral</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="3" :id="'supportRadio' + p"
-          v-model="stance[p]">
-        <label class="form-check-label" :for="'supportRadio' + p">Supportive</label>
+
+      <p class="mt-4 mb-0 p-0"><b>Topic Tags</b></p>
+      <p class="mt-0 mb-2 p-0"><small>The tags should capture all the essential elements being illustrated or mentioned
+          in
+          the meme.
+        </small></p>
+      <b-form-tags v-model="topicTags" no-outer-focus class="mb-2">
+        <template v-slot="{ tags, inputAttrs, inputHandlers, tagVariant, addTag, removeTag }">
+          <b-input-group class="mb-2">
+            <b-form-input v-bind="inputAttrs" v-on="inputHandlers" placeholder="New tag - Press enter to add"
+              class="form-control"></b-form-input>
+            <b-input-group-append>
+              <b-button @click="addTag()" variant="primary">Add</b-button>
+            </b-input-group-append>
+          </b-input-group>
+          <div class="d-inline-block" style="font-size: 1.5rem;">
+            <b-form-tag v-for="tag in tags" @remove="removeTag(tag)" :key="tag" :title="tag" :variant="tagVariant"
+              class="mr-1">{{ tag }}</b-form-tag>
+          </div>
+        </template>
+      </b-form-tags>
+
+      <p class="mt-4 mb-0 p-0"><b>Stance</b></p>
+      <p class="mt-0 mb-2 p-0"><small>Indicate whether the meme is against, neutral or supportive towards the identified
+          pillars
+        </small></p>
+      <div class="mt-2 mb-2" v-for="p in checkedPillars" :key="pillars[p]">
+        {{ pillars[p] }}
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="1" :id="'againstRadio' + p"
+            v-model="stance[p]">
+          <label class="form-check-label" :for="'againstRadio' + p">Against</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="2" :id="'neutralRadio' + p"
+            v-model="stance[p]">
+          <label class="form-check-label" :for="'neutralRadio' + p">Neutral</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="3" :id="'supportRadio' + p"
+            v-model="stance[p]">
+          <label class="form-check-label" :for="'supportRadio' + p">Supportive</label>
+        </div>
       </div>
     </div>
 
@@ -138,7 +144,7 @@ export default {
   },
   computed: {
     imagepath: function () {
-      return `${Settings.PROTOCOL}://${Settings.HOST}:${Settings.PORT}/${this.item.memes.filename}`;
+      return `${Settings.PROTOCOL}://${Settings.HOST}:${Settings.PORT}/img/${this.item.memes.filename}`;
     }
   },
   methods: {
@@ -170,26 +176,59 @@ export default {
     },
     async onSaveButton() {
 
-      // Create the tags
+      var msg = ""
+      if (this.contentType == null) {
+        msg += "Please decide whether this visual is a meme or non-meme\n"
+      }
+
+      if (this.relatedCountry == null) {
+        msg += "Please decide whether this visual is a Singapore-related meme. \n"
+      }
+
+      if (msg != "") {
+        alert(msg)
+        return
+      }
+
+      const selectedPillars = [];
+      const selectedStance = [];
       const tags = [];
-      for (let i = 0; i < this.topicTags.length; i++) {
-        const element = this.topicTags[i];
-        const tagId = await this.createTag(element)
-        tags.push(tagId);
-      }
+      if (this.contentType == 1 && this.relatedCountry == 1) {
+        // Create the tags
+        for (let i = 0; i < this.topicTags.length; i++) {
+          const element = this.topicTags[i];
+          const tagId = await this.createTag(element)
+          tags.push(tagId);
+        }
 
-      console.log(tags);
+        // Check whether the boxes are filled up
+        for (let i = 0; i < this.checkedPillars.length; i++) {
+          selectedPillars.push(this.checkedPillars[i] + 1)
+        }
 
-      // Check whether the boxes are filled up
-      const selectedPillars = []
-      for (let i = 0; i < this.checkedPillars.length; i++) {
-        selectedPillars.push(this.checkedPillars[i] + 1)
-      }
+        for (let i = 0; i < this.checkedPillars.length; i++) {
+          const idx = this.checkedPillars[i]
+          if (this.stance[idx] != null) {
+            selectedStance.push(this.stance[idx])
+          }
+        }
 
-      const selectedStance = []
-      for (let i = 0; i < this.checkedPillars.length; i++) {
-        const idx = this.checkedPillars[i]
-        selectedStance.push(this.stance[idx])
+        if (tags.length == 0) {
+          msg += "Please enter the appropriate tags\n"
+        }
+
+        if (selectedPillars.length == 0) {
+          msg += "Please select the appropriate defence pillars\n"
+        }
+
+        if (selectedStance.length == 0 || selectedStance.length != selectedPillars.length) {
+          msg += "Please select the stance for the corresponding pillars\n"
+        }
+
+        if (msg != "") {
+          alert(msg);
+          return
+        }
       }
 
       const body = {
