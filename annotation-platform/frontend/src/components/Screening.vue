@@ -7,7 +7,6 @@
         revisit at a later time and (2) inform us about it. <br /><em>IMPORTANT: You still have to submit the
           form</em></small></p>
     <div>
-      {{ flagged }}
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" id="flaggingCheckbox" v-model="flagged">
         <label class="form-check-label" for="flaggingCheckbox">I'll think about this later!</label>
@@ -17,7 +16,6 @@
     <p class="mt-4 mb-0 p-0"><b>Content Type</b></p>
     <p class="mt-0 mb-2 p-0"><small>Do you regard the visual as a meme?</small></p>
     <div>
-      {{ contentType }}
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="contentTypeOptions" id="memeRadio" value="1"
           v-model="contentType">
@@ -33,7 +31,6 @@
     <p class="mt-4 mb-0 p-0"><b>Related Country</b></p>
     <p class="mt-0 mb-2 p-0"><small>Do you regard the visual as a Singapore meme?</small></p>
     <div>
-      {{ relatedCountry }}
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="relatedCountryOptions" id="sgRadio" value="1"
           v-model="relatedCountry">
@@ -53,7 +50,6 @@
     </b-input-group>
 
     <p class="mt-4 mb-0 p-0"><b>Defence Pillar(s)</b></p>
-    {{ checkedPillars }}
     <p class="mt-0 mb-2 p-0"><small>Would you classify this visual under any of the Total Defence Pillars?</small></p>
     <div>
       <div class="form-check" v-for="(pillar, idx) in pillars" :key="pillar">
@@ -63,7 +59,6 @@
     </div>
 
     <p class="mt-4 mb-0 p-0"><b>Topic Tags</b></p>
-    {{ topicTags }}
     <p class="mt-0 mb-2 p-0"><small>The tags should capture all the essential elements being illustrated or mentioned in
         the meme.
       </small></p>
@@ -84,12 +79,10 @@
     </b-form-tags>
 
     <p class="mt-4 mb-0 p-0"><b>Stance</b></p>
-    {{ stance }}
     <p class="mt-0 mb-2 p-0"><small>Indicate whether the meme is against, neutral or supportive towards the identified
         pillars
       </small></p>
     <div class="mt-2 mb-2" v-for="p in checkedPillars">
-      {{ pillars[p] }}
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" :name="'stanceOptions' + p" value="1" :id="'againstRadio' + p"
           v-model="stance[p]">
