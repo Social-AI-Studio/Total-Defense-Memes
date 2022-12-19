@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "pillarId",
         otherKey: "screeningId"
       });
+
+      Pillar.hasMany(models.ScreeningPillar, {
+        foreignKey: "pillarId"
+      });
     }
   }
   Pillar.init({

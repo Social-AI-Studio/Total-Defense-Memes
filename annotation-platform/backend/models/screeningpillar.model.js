@@ -11,6 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      
+      ScreeningPillar.belongsTo(models.Screening, {
+        foreignKey: "screeningId"
+      });
+      
+      ScreeningPillar.belongsTo(models.Pillar, {
+        foreignKey: "pillarId"
+      });
     }
   }
   ScreeningPillar.init({

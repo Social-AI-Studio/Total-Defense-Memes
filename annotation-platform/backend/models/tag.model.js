@@ -25,11 +25,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Tag.init({
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     name: {
       type: DataTypes.STRING,
     },
     annotatorId: {
-      type:DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
     }
   }, {
     sequelize,

@@ -1,4 +1,5 @@
 const db = require("../models");
+const screeningpillarModel = require("../models/screeningpillar.model");
 
 const Meme = db.Meme;
 const Batch = db.Batch;
@@ -7,6 +8,7 @@ const Pillar = db.Pillar;
 const Tag = db.Tag;
 const Op = db.Sequelize.Op;
 const User = db.User;
+const ScreeningPillar = db.ScreeningPillar
 
 const create = async (req, res) => {
 
@@ -48,7 +50,7 @@ const create = async (req, res) => {
 };
 
 let getBreakChainError = () => {
-  let err = new Error();
+  var err = new Error();
   err.name = 'BreakChainError';
   return err;
 };
@@ -71,8 +73,10 @@ const update = async (req, res) => {
       screening.relatedCountry = req.body.relatedCountry;
     }
 
+    await screening.save()
+
     if ((screening.contentType == 0) || (screening.relatedCountry == 0)) {
-      res.status(200).send({message: "OK"})
+      res.status(200).send({ message: "OK" })
       throw getBreakChainError();
     }
 
@@ -82,6 +86,7 @@ const update = async (req, res) => {
       }
     })
 
+    console.log("topicTags:", req.body.topicTags)
     const tagPromise = Tag.findAll({
       where: {
         id: {
@@ -115,20 +120,23 @@ const update = async (req, res) => {
         screening.addPillar(element, { through: { stance: req.body.stance[i] } })
       }
 
+      console.log("num tags:", tags.length)
       screening.setTags(tags)
     }
+
+    console.log("HERE!!")
 
     await screening.save()
 
     res.status(200).send({
       message: "OK",
     });
-  // }).catch((err) => {
-  //   if (err != "BreakChainError") {
-  //     res.status(500).send({
-  //       message: err
-  //     })
-  //   }
+  }).catch((err) => {
+    if (err != "BreakChainError") {
+      res.status(500).send({
+        message: err
+      })
+    }
   })
 };
 
@@ -144,10 +152,53 @@ const fetch = async (req, res) => {
       where: { batchId: req.params.batchId },
       required: true,
       as: "memes"
+    }, {
+      model: Tag,
+      as: "tags"
+    }, {
+      model: ScreeningPillar,
+      as: "pillars"
     }]
   }).then((screenings) => {
+    console.log(screenings[0].memes)
+
+    var results = []
+    for (let i = 0; i < screenings.length; i++) {
+      const e = screenings[i];
+
+      var obj = {
+        "id": e.id,
+        "annotatorId": e.annotatorId,
+        "memeId": e.memeId,
+        "text": e.text,
+        "contentType": e.contentType,
+        "relatedCountry": e.relatedCountry,
+        "flagged": e.flagged,
+        "createdAt": e.createdAt,
+        "updatedAt": e.updatedAt,
+        "filename": e.memes.dataValues.filename,
+        "tags": [],
+        "pillars": [],
+        "stance": [null, null, null, null, null, null, null],
+      };
+
+      for (let j = 0; j < e.tags.length; j++) {
+        const t = e.tags[j].dataValues;
+        obj['tags'].push(t.name)
+      }
+
+      for (let j = 0; j < e.pillars.length; j++) {
+        const p = e.pillars[j].dataValues;
+        obj['pillars'].push(p.pillarId - 1)
+        obj['stance'][p.pillarId - 1] = p.stance
+      }
+
+      results.push(obj)
+    }
+
+    // Process the results
     res.status(200).send({
-      screenings: screenings,
+      screenings: results,
     });
   })
 };

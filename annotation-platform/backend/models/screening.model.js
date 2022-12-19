@@ -24,13 +24,19 @@ module.exports = (sequelize, DataTypes) => {
       Screening.belongsToMany(models.Tag, {
         through: "ScreeningTag",
         foreignKey: "screeningId",
-        otherKey: "tagId"
+        otherKey: "tagId",
+        as: "tags"
       });
 
       Screening.belongsToMany(models.Pillar, {
         through: "ScreeningPillar",
         foreignKey: "screeningId",
         otherKey: "pillarId"
+      });
+      
+      Screening.hasMany(models.ScreeningPillar, {
+        foreignKey: "screeningId",
+        as: "pillars"
       });
     }
   }

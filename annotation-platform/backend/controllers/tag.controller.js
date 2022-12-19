@@ -12,7 +12,7 @@ const create = async (req, res) => {
     }
   }).then((tag) => {
     if (tag != null) {
-      let error = new Error();
+      var error = new Error();
       error.name = tag.id;
       throw error
     }
