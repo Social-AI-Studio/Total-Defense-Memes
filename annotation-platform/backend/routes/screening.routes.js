@@ -14,4 +14,5 @@ module.exports = function(app) {
   app.put("/api/screening/:screeningId", [authJwt.verifyToken, authJwt.isAnnotator], controller.update);
   app.get("/api/screening/:batchId", [authJwt.verifyToken, authJwt.isAnnotator], controller.fetch);
   app.get("/api/screening", [authJwt.verifyToken, authJwt.isAnnotator], controller.fetchAll);
+  app.get("/api/report/:batchId", [authJwt.verifyToken, authJwt.isAdmin], controller.generate);
 };
