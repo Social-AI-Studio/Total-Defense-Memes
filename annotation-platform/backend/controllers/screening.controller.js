@@ -333,13 +333,23 @@ const generate = async (req, res) => {
     for (let i = 0; i < screenings.length; i++) {
       const e = screenings[i];
 
+      var contentType = null;
+      if (e.contentType) {
+        contentType = e.contentType ? "Meme": "Non-Meme";
+      }
+
+      var relatedCountry = null;
+      if (e.relatedCountry) {
+        relatedCountry = e.relatedCountry ? "SG": "Non-SG";
+      }
+
       var obj = {
         "id": e.id,
         "annotatorId": e.annotatorId,
         "memeId": e.memeId,
         "text": e.text,
-        "contentType": e.contentType ? "Meme": "Non-Meme",
-        "relatedCountry": e.relatedCountry ? "SG" : "Non-SG",
+        "contentType": contentType,
+        "relatedCountry": relatedCountry,
         "flagged": e.flagged,
         "createdAt": e.createdAt,
         "updatedAt": e.updatedAt,
