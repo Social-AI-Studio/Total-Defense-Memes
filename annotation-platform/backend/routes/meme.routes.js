@@ -10,6 +10,7 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/meme/upload",  upload.single("file"), controller.upload);
-  app.get("/api/meme",  controller.getMemes);
+  app.post("/api/batch/upload",  upload.single("file"), controller.upload);
+  app.post("/api/meme/upload", upload.single("file"), controller.addToBatch);
+  // app.get("/api/meme",  controller.getMemes);
 };

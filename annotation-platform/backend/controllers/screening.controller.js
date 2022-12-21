@@ -239,58 +239,6 @@ const fetchAll = async (req, res) => {
       "batches": response
     })
   });
-
-
-  //     // Get existing and total counts
-  //     currentPromises.push(
-  //       Screening.count({
-  //         where: {
-  //           annotatorId: req.userId,
-  //           contentType: {
-  //             [Op.ne]: null
-  //           }
-  //         },
-  //         include: [{
-  //           model: Meme,
-  //           where: { batchId: batch.id },
-  //           required: true,
-  //           as: "memes"
-  //         }]
-  //       })
-  //     )
-  //     totalPromises.push(
-  //       Screening.count({
-  //         where: {
-  //           annotatorId: req.userId
-  //         },
-  //         include: [{
-  //           model: Meme,
-  //           where: { batchId: batch.id },
-  //           required: true,
-  //           as: "memes"
-  //         }]
-  //       }))
-  //   }
-
-  //   console.log(currentPromises.length)
-
-  //   return Promise.all(currentPromises, totalPromises)
-  // }).then((results) => {
-  //   var currentCounts = results[0]
-  //   var totalCounts = results[1]
-
-  //   console.log(currentCounts)
-  //   console.log(totalCounts)
-
-  //   for (let i = 0; i < currentCounts.length; i++) {
-  //     response[i]['current'] = currentCounts[i];
-  //     response[i]['total'] = totalCounts[i];
-  //   }
-
-  //   res.status(200).send({
-  //     "data": response
-  // })
-  // })
 };
 
 
