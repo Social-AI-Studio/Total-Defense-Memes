@@ -293,9 +293,91 @@ const fetchAll = async (req, res) => {
   // })
 };
 
+
+const pillars = [
+  "Military Defence", "Civil Defence", "Economic Defence", "Social Defence", 
+  "Psychological Defence", "Digital Defence", "Others"
+]
+
+const stance = [
+  "Against", "Neutral", "Supportive"
+]
+
+const generate = async (req, res) => {
+
+  // Fetch the memes within the indicated batch
+  Screening.findAll({
+    where: {
+      annotatorId: { 
+        [Op.notIn]: [1,2] 
+      }
+    },
+    include: [{
+      model: Meme,
+      where: { batchId: req.params.batchId },
+      required: true,
+      as: "memes"
+    }, {
+      model: Tag,
+      as: "tags"
+    }, {
+      model: ScreeningPillar,
+      as: "pillars"
+    },
+    ],
+    order: [
+      ['id', 'ASC']
+    ]
+  }).then((screenings) => {
+    console.log(screenings[0].memes)
+
+    var results = []
+    for (let i = 0; i < screenings.length; i++) {
+      const e = screenings[i];
+
+      var obj = {
+        "id": e.id,
+        "annotatorId": e.annotatorId,
+        "memeId": e.memeId,
+        "text": e.text,
+        "contentType": e.contentType ? "Meme": "Non-Meme",
+        "relatedCountry": e.relatedCountry ? "SG" : "Non-SG",
+        "flagged": e.flagged,
+        "createdAt": e.createdAt,
+        "updatedAt": e.updatedAt,
+        "filename": e.memes.dataValues.filename,
+        "tags": [],
+        "pillars": [],
+        "stance": [],
+      };
+
+      for (let j = 0; j < e.tags.length; j++) {
+        const t = e.tags[j].dataValues;
+        obj['tags'].push(t.name)
+      }
+
+      for (let j = 0; j < e.pillars.length; j++) {
+        const p = e.pillars[j].dataValues;
+        const idx = p.pillarId -1
+
+        obj['pillars'].push(pillars[idx])
+        obj['stance'].push(stance[idx])
+      }
+
+      results.push(obj)
+    }
+
+    // Process the results
+    res.status(200).send({
+      screenings: results,
+    });
+  })
+};
+
 module.exports = {
   create,
   update,
   fetch,
-  fetchAll
+  fetchAll,
+  generate
 };
