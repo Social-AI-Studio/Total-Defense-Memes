@@ -309,7 +309,7 @@ const generate = async (req, res) => {
   Screening.findAll({
     where: {
       annotatorId: { 
-        [Op.notIn]: [1,2] 
+        [Op.notIn]: [1, 2] 
       }
     },
     include: [{
@@ -329,8 +329,6 @@ const generate = async (req, res) => {
       ['id', 'ASC']
     ]
   }).then((screenings) => {
-    console.log(screenings[0].memes)
-
     var results = []
     for (let i = 0; i < screenings.length; i++) {
       const e = screenings[i];
@@ -361,7 +359,7 @@ const generate = async (req, res) => {
         const idx = p.pillarId -1
 
         obj['pillars'].push(pillars[idx])
-        obj['stance'].push(stance[idx])
+        obj['stance'].push(stance[p.stance - 1])
       }
 
       results.push(obj)
