@@ -107,7 +107,6 @@ const update = async (req, res) => {
       }
     })
 
-    console.log("topicTags:", req.body.topicTags)
     const tagPromise = Tag.findAll({
       where: {
         id: {
@@ -135,7 +134,9 @@ const update = async (req, res) => {
     screening.text = req.body.text
 
     if (screening.relatedCountry) {
-      screening.removePillars(screening.Pillars)
+      screening.setPillars([])
+      await screening.save()
+
       for (let i = 0; i < pillars.length; i++) {
         const element = pillars[i];
         screening.addPillar(element, { through: { stance: req.body.stance[i] } })
