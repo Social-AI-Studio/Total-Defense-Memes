@@ -10,9 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Batch.hasMany(models.Meme, {
-        foreignKey: "batchId", 
-        as: "memes" 
+      Batch.belongsToMany(models.Meme, {
+        through: models.MemeBatch,
+        foreignKey: "batchId",
+        otherKey: "memeId",
+        as: 'memes'
       });
 
       Batch.belongsToMany(models.User, {

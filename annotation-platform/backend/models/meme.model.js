@@ -9,9 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Meme.belongsTo(models.Batch, {
-        foreignKey: "batchId"
+      // // define association here
+      // Meme.belongsTo(models.Batch, {
+      //   foreignKey: "batchId"
+      // });
+
+      Meme.belongsToMany(models.Batch, {
+        through: models.MemeBatch,
+        foreignKey: "memeId",
+        otherKey: "batchId",
       });
 
       Meme.hasMany(models.Screening, { 
@@ -36,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     source: DataTypes.STRING,
     keywords: DataTypes.STRING,
     priority: DataTypes.STRING,
+    batchId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Meme',
