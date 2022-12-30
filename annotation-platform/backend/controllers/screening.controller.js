@@ -94,6 +94,8 @@ const update = async (req, res) => {
       screening.relatedCountry = req.body.relatedCountry;
     }
 
+    screening.setPillars([])
+    screening.setTags([])
     await screening.save()
 
     if ((screening.contentType == 0) || (screening.relatedCountry == 0)) {
@@ -134,10 +136,8 @@ const update = async (req, res) => {
     screening.text = req.body.text
 
     if (screening.relatedCountry) {
-      screening.setPillars([])
-      await screening.save()
-
       for (let i = 0; i < pillars.length; i++) {
+        console.log(pillars[i])
         const element = pillars[i];
         screening.addPillar(element, { through: { stance: req.body.stance[i] } })
       }
