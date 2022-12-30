@@ -11,8 +11,8 @@ module.exports = {
      */
 
     await queryInterface.changeColumn(
-      'Tags',
-      'name',
+      'Memes',
+      'filename',
       {
         unique: false
       }
@@ -27,8 +27,8 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     await queryInterface.add(
-      'Tags',
-      'name',
+      'Memes',
+      'filename',
       {
         unique: true
       })
