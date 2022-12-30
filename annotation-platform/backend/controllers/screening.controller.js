@@ -35,6 +35,12 @@ const create = async (req, res) => {
     var user = results[0]
     var batch = results[1]
 
+    if (batch.memes == 0) {
+      var err = new Error();
+      err.name = `There is no memes fetched alongside batch ${batch.id}`;
+      throw err;
+    }
+
     // Create screenings
     var screenings = []
     batch.memes.forEach(element => {
@@ -57,6 +63,11 @@ const create = async (req, res) => {
     res.status(200).send({
       message: "OK",
     });
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send({
+      message: err
+    })
   })
 };
 
