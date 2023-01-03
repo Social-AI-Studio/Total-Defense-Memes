@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         through: models.MemeBatch,
         foreignKey: "memeId",
         otherKey: "batchId",
+        as: "batches"
       });
 
       Meme.hasMany(models.Screening, { 

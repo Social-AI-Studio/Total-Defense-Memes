@@ -167,6 +167,7 @@ const fetch = async (req, res) => {
       model: Batch,
       where: { id: req.params.batchId },
       required: true,
+      as: "batches"
     }
   }).then((memes) => {
     console.log(`num. memes: ${memes.length}`)
@@ -282,29 +283,61 @@ const stance = [
 const generate = async (req, res) => {
 
   // Fetch the memes within the indicated batch
-  Screening.findAll({
-    where: {
-      annotatorId: {
-        [Op.notIn]: [1, 2]
-      }
-    },
-    include: [{
-      model: Meme,
-      where: { batchId: req.params.batchId },
+  Meme.findAll({
+    include: {
+      model: Batch,
+      where: { id: req.params.batchId },
       required: true,
-      as: "memes"
-    }, {
-      model: Tag,
-      as: "tags"
-    }, {
-      model: ScreeningPillar,
-      as: "pillars"
-    },
-    ],
-    order: [
-      ['id', 'ASC']
-    ]
+      as: "batches"
+    }
+  }).then((memes) => {
+    console.log(`num. memes: ${memes.length}`)
+
+    var memeIds = []
+    for (let i = 0; i < memes.length; i++) {
+      const element = memes[i];
+      memeIds.push(element.id)
+    }
+
+    console.log(memes[memes.length - 1].batches)
+
+    if (memes.length > 300) {
+      error = new Error();
+      error.name = "Selected batch has more than 300 records. Please inform administrator."
+      throw error
+    }
+
+    return Screening.findAll({
+      where: {
+        annotatorId: {
+          [Op.notIn]: [1, 2]
+        },
+        memeId: {
+          [Op.in]: memeIds
+        }
+      },
+      include: [{
+        model: Meme,
+        as: "memes"
+      },{
+        model: Tag,
+        as: "tags"
+      }, {
+        model: ScreeningPillar,
+        as: "pillars"
+      },
+      ],
+      order: [
+        ['id', 'ASC']
+      ]
+    })
   }).then((screenings) => {
+    if (screenings.length > 900) {
+      error = new Error();
+      error.name = "Selected screenings has more than 900 records. Please inform administrator."
+      throw error
+    }
+
     var results = []
     for (let i = 0; i < screenings.length; i++) {
       const e = screenings[i];
@@ -355,6 +388,11 @@ const generate = async (req, res) => {
     res.status(200).send({
       screenings: results,
     });
+  }).catch((err) => {
+    console.log(err)
+    res.status(500).send({
+      message: err
+    })
   })
 };
 
