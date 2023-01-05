@@ -57,7 +57,9 @@ module.exports = (sequelize, DataTypes) => {
     text: DataTypes.STRING,
     contentType: DataTypes.INTEGER,
     relatedCountry: DataTypes.INTEGER,
-    flagged: DataTypes.INTEGER
+    flagged: DataTypes.INTEGER,
+    updated: DataTypes.INTEGER,
+    reviewed: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Screening',

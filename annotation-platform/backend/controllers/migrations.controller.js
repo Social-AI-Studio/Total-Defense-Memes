@@ -2,8 +2,10 @@ const db = require("../models");
 const screeningpillarModel = require("../models/screeningpillar.model");
 
 const Meme = db.Meme;
-const Batch = db.Batch;
 const MemeBatch = db.MemeBatch;
+const Screening = db.Screening;
+
+const Op = db.Sequelize.Op;
 
 function migrateBatch(req, res) {
   MemeBatch.findAll().then((memeBatches) => {
@@ -37,14 +39,52 @@ function migrateBatch(req, res) {
   })
 }
 
-function migrateScreenings(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
+
+function migrateScreeningUpdated(req, res) {
+  Screening.findAll({
+    where: {
+      updated: 0
+    }
+  }).then((screenings) => {
+    if (screenings.length == 0) {
+      var err = new Error();
+      err.name = "All screenings has been completed";
+      throw err;
+    }
+
+    var completedIds = []
+    for (let i = 0; i < screenings.length; i++) {
+      const element = screenings[i];
+
+      var createdAt = Date.parse(element.createdAt)
+      var updatedAt = Date.parse(element.updatedAt)
+
+      if (updatedAt != createdAt) {
+        completedIds.push(element.id)
+      }
+    }
+
+    return Screening.update(
+      { updated: 1 },
+      {
+        where: {
+          id: completedIds
+        },
+      }
+    )
+  }).then(() => {
+    res.status(200).send({
+      "msg": "OK"
+    })
+  }).catch((err) => {
+    console.log(err)
+    res.status(500).send({
+      message: err
+    })
+  })
 }
 
 module.exports = {
   migrateBatch,
-  migrateScreenings
+  migrateScreeningUpdated
 };

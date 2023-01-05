@@ -34,7 +34,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
-    }
+    },
+    type: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Batch',
