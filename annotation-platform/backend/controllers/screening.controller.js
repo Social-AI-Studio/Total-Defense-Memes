@@ -24,7 +24,8 @@ const create = async (req, res) => {
 
   var batchPromise = Batch.findOne({
     where: {
-      name: req.body.batchName
+      name: req.body.batchName,
+      type: 0
     },
     include: [{
       model: Meme, as: "memes"
@@ -34,6 +35,12 @@ const create = async (req, res) => {
   Promise.all([userPromise, batchPromise]).then(async (results) => {
     var user = results[0]
     var batch = results[1]
+
+    if (batch == null) {
+      var err = new Error();
+      err.name = `Batch ${req.body.batchName} with type 0 found`;
+      throw err;
+    }
 
     if (batch.memes == 0) {
       var err = new Error();
@@ -56,6 +63,67 @@ const create = async (req, res) => {
     });
 
     await Screening.bulkCreate(shuffledScreenings)
+
+    // add batch to user
+    user.addBatch(batch)
+
+    res.status(200).send({
+      message: "OK",
+    });
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send({
+      message: err
+    })
+  })
+};
+
+const review = async (req, res) => {
+
+  // Fetch the memes within the indicated batch
+  var userPromise = User.findByPk(req.body.annotatorId)
+
+  var batchPromise = Batch.findOne({
+    where: {
+      name: req.body.batchName,
+      type: 1
+    },
+    include: [{
+      model: Meme, as: "memes"
+    }]
+  })
+
+  Promise.all([userPromise, batchPromise]).then(async (results) => {
+    var user = results[0]
+    var batch = results[1]
+
+    if (batch == null) {
+      var err = new Error();
+      err.name = `No batch ${req.body.batchName} with type 1 found`;
+      throw err;
+    }
+
+    if (batch.memes == 0) {
+      var err = new Error();
+      err.name = `There is no memes fetched alongside batch ${batch.id}`;
+      throw err;
+    }
+
+    // change screenings from reviewed to unreviewed
+    var memeIds = []
+    batch.memes.forEach(element => {
+      memeIds.push(element.id)
+    });
+
+    await Screening.update(
+      { "reviewed": 0 },
+      {
+        where: {
+          "memeId": { [Op.in]: memeIds },
+          "annotatorId": user.id
+        }
+      }
+    )
 
     // add batch to user
     user.addBatch(batch)
@@ -96,6 +164,8 @@ const update = async (req, res) => {
 
     screening.setPillars([])
     screening.setTags([])
+    screening.updated = 1
+    screening.reviewed = 1
     await screening.save()
 
     if ((screening.contentType == 0) || (screening.relatedCountry == 0)) {
@@ -249,25 +319,68 @@ const fetchAll = async (req, res) => {
   const response = []
   User.findByPk(req.userId, {
     include: [{
-      model: Batch, as: "batches"
+      model: Batch,
+      as: "batches",
+      include: [{
+        model: Meme,
+        as: "memes"
+      }]
     }]
   }).then((user) => {
-
-    // Prep outputs
-    var currentPromises = []
-    var totalPromises = []
+    var promises = []
     for (let i = 0; i < user.batches.length; i++) {
+      // Update batch information
       const batch = user.batches[i];
       response.push({
         "id": batch.id,
-        "name": batch.name
+        "name": batch.name,
+        "type": batch.type
       })
+
+      // Retrieve screenings from these batches
+      var memeIds = []
+      for (let j = 0; j < batch.memes.length; j++) {
+        const meme = batch.memes[j];
+        memeIds.push(meme.id)
+      }
+
+      promises.push(Screening.findAll({
+        where: {
+          "memeId": {
+            [Op.in]: memeIds
+          },
+          "annotatorId": req.userId
+        }
+      }))
+    }
+
+    return Promise.all(promises)
+  }).then(screeningsList => {
+    // Retrieve progress
+    for (let i = 0; i < screeningsList.length; i++) {
+      const screenings = screeningsList[i];
+      var completed = 0
+      for (let j = 0; j < screenings.length; j++) {
+        const screening = screenings[j];
+        const batch = response[i]
+
+        if (batch.type == 0 && screening.updated == 1) {
+          completed += 1;
+        }
+
+        if (batch.type == 1 && screening.reviewed == 1) {
+          completed += 1;
+        }
+      }
+
+      response[i]['completed'] = completed
+      response[i]['total'] = screenings.length
     }
 
     res.status(200).send({
       "batches": response
     })
-  });
+  })
 };
 
 
@@ -319,7 +432,7 @@ const generate = async (req, res) => {
       include: [{
         model: Meme,
         as: "memes"
-      },{
+      }, {
         model: Tag,
         as: "tags"
       }, {
@@ -399,6 +512,7 @@ const generate = async (req, res) => {
 module.exports = {
   create,
   update,
+  review,
   fetch,
   fetchAll,
   generate

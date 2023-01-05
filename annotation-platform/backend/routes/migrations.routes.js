@@ -11,4 +11,5 @@ module.exports = function(app) {
   });
 
   app.get("/api/migrations/batch", [authJwt.verifyToken, authJwt.isAdmin] ,controller.migrateBatch);
+  app.get("/api/migrations/screenings", [authJwt.verifyToken, authJwt.isAdmin] ,controller.migrateScreeningUpdated);
 };

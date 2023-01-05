@@ -10,7 +10,5 @@ module.exports = function(app) {
     next();
   });
 
-  // app.post("/api/batch/upload",  upload.single("file"), controller.upload);
   app.post("/api/meme/upload", upload.single("file"), controller.addMemesToBatch);
-  // app.get("/api/meme",  controller.getMemes);
 };

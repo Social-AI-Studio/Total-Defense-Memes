@@ -20,6 +20,7 @@ const addMemesToBatch = async (req, res) => {
     }
 
     let batches = new Set();
+    let batchesType = new Set();
     let memes = [];
     let memeFilenames = [];
     let path = __basedir + "/uploads/" + req.file.filename;
@@ -31,6 +32,7 @@ const addMemesToBatch = async (req, res) => {
       })
       .on("data", (row) => {
         batches.add(row['batch'])
+        batchesType.add(row['batchType'])
         memes.push(row)
         memeFilenames.push(row['filename'])
       })
@@ -53,14 +55,16 @@ const addMemesToBatch = async (req, res) => {
         })
         var batchPromise = Batch.findOrCreate({
           where: {
-            "name": Array.from(batches)[0]
+            "name": Array.from(batches)[0],
+            "type": Array.from(batchesType)[0]
           }
         })
 
         Promise.all([memesPromises, batchPromise]).then(async (results) => {
           var memeObjs = results[0];
-          var batchObj = results[1];
+          var batchObj = results[1][0];
           console.log(`[AddMemeToBatch] Found Memes: ${memeObjs.length}`)
+          console.log(batchObj.id)
 
           for (let i = 0; i < memeObjs.length; i++) {
             const element = memeObjs[i];
@@ -92,7 +96,7 @@ const addMemesToBatch = async (req, res) => {
             }
           })
 
-          return Promise.all([memesPromises, batchPromise])
+          return await Promise.all([memesPromises, batchPromise])
 
         }).then(async (results) => {
           var memeObjs = results[0];
