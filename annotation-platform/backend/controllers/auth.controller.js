@@ -72,7 +72,7 @@ exports.signin = (req, res) => {
     content.username = user.username
     content.email = user.email
     content.accessToken = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400 // 24 hours
+      expiresIn: 2592000 // 30 days
     });
 
     return user.getRoles()
