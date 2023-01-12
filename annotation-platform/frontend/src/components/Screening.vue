@@ -176,7 +176,7 @@ export default {
         msg += "Please decide whether this visual is a meme or non-meme\n"
       }
 
-      if (this.item.relatedCountry == null) {
+      if (this.item.contentType == 1 && this.item.relatedCountry == null) {
         msg += "Please decide whether this visual is a Singapore-related meme. \n"
       }
 
