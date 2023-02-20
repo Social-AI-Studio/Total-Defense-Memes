@@ -1,5 +1,6 @@
 
-##Rum 
+## Rum 
+<br/>
 Multi-modal meme analysis
 
 ## File Summary
@@ -8,8 +9,8 @@ Multi-modal meme analysis
 * classification.ipynb - pillar-stance classification using MLP on top of embeddings
 * report/report.py - annotation agreement\conflict analysis.
 * postprocessing/priority_memes.csv - prioritized memes
-* report/annotated_memes.json - annotated visuals
-\ non-memes      - Id,Filename <br/>
+* report/annotated_memes.json - annotated visuals <br/>
+non-memes      - Id,Filename <br/>
 memes          - Id,Filename <br/>
 non sg memes   - Id,Filename <br/>
 SG memes       - Id,Filename <br/>
@@ -20,13 +21,15 @@ matched_memes  - details of agreement memes(memeId,Filename,relatedCountry,pilla
 
 
 ## Annotation summary
-We annotate a subset of 7200 visuals from priority memes. <br/>
+We annotate a subset of 7,200 visuals from priority memes. <br/>
 Each visual is assigned following labels: <br/>
-Meme/Non-Meme - binary <br/>
-SG/Non-SG     - binary <br/>
-pillars       - multi choice (6 total defence pillars + 'others') <br/>
-stance        - one out of 3 (supportive,neutral,against) <br/>
-tags          - hashtags to describe a meme (min length - , max length - , mean length - ) <br/>
+<ol>
+    <li> Meme/Non-Meme - binary </li>
+    <li> SG/Non-SG     - binary </li>
+    <li> pillars       - multi choice (6 total defence pillars + 'others') </li>
+    <li> stance        - one out of 3 (supportive,neutral,against) </li>
+    <li> tags          - hashtags to describe a meme (min length - , max length - , mean length - ) </li>
+</ol>
 
 |               | Count          |
 | ------------- | -------------  |
@@ -69,15 +72,15 @@ Instagram handles - <br/>
 #sgmemes
 
 ## Data Collection
-data-scraping/google_search_crawler.py - Data is collected form google search using keywords for each of the 6 pillars <br/>
-data-scraping/scrape_reddit.py - reddit scrape with inputs - subreddit,before and after timestamp <br/>
-To scrape instagram, we use instaloader library(https://pypi.org/project/instaloader/) <br/>
-usage - instaloader profile [instagram page handle e.g. memedefsg] <br/>
-This creates a folder with the handle name and downloads visuals <br/>
+* data-scraping/google_search_crawler.py - Data is collected form google search using keywords for each of the 6 pillars <br/>
+* data-scraping/scrape_reddit.py - reddit scrape with inputs - subreddit,before and after timestamp <br/>
+* To scrape instagram, we use instaloader library(https://pypi.org/project/instaloader/) <br/>
+    usage - instaloader profile [instagram page handle e.g. memedefsg] <br/>
+    This creates a folder with the handle name and downloads visuals <br/>
 
 ## Installation
-data scraping from google - pip install simple-image-download <br/>
-data scraping from instagram - pip install instaloader
+* data scraping from google - pip install simple-image-download <br/>
+* data scraping from instagram - pip install instaloader
 
 ## Usage
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
