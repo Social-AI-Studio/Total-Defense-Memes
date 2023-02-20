@@ -1,34 +1,35 @@
 
-Rum 
+##Rum 
+Multi-modal meme analysis
 
 ## File Summary
 * postprocessing/processing.ipynb - de-duplication, corrupt file filtering and prioritization
 * clustering.ipynb - clustering on extracted embeddings
 * classification.ipynb - pillar-stance classification using MLP on top of embeddings
-* report.py - annotation agreement\conflict analysis.
-* priority_memes.csv - prioritized memes
-* sg_memes.json - annotated SG memes
-non-memes      - Id,Filename
-memes          - Id,Filename
-non sg memes   - Id,Filename
-SG memes       - Id,Filename
-meme text      - OCR extracted text from the memes
-pillar_matches - list of memeid,pillars 
-stance_matches - meme ids where stance match
+* report/report.py - annotation agreement\conflict analysis.
+* postprocessing/priority_memes.csv - prioritized memes
+* report/annotated_memes.json - annotated visuals
+\ non-memes      - Id,Filename <br/>
+memes          - Id,Filename <br/>
+non sg memes   - Id,Filename <br/>
+SG memes       - Id,Filename <br/>
+meme text      - OCR extracted text from the memes <br/>
+pillar_matches - list of memeid,pillars <br/>
+stance_matches - meme ids where stance match <br/>
 matched_memes  - details of agreement memes(memeId,Filename,relatedCountry,pillars,stances)
 
 
 ## Annotation summary
-We annotate a subset of 7200 visuals from priority memes.
-Each visual is assigned following labels:
-Meme/Non-Meme - binary
-SG/Non-SG     - binary
-pillars       - multi choice (6 total defence pillars + 'others')
-stance        - one out of 3 (supportive,neutral,against)
-tags          - hashtags to describe a meme (min length - , max length - , mean length - )
+We annotate a subset of 7200 visuals from priority memes. <br/>
+Each visual is assigned following labels: <br/>
+Meme/Non-Meme - binary <br/>
+SG/Non-SG     - binary <br/>
+pillars       - multi choice (6 total defence pillars + 'others') <br/>
+stance        - one out of 3 (supportive,neutral,against) <br/>
+tags          - hashtags to describe a meme (min length - , max length - , mean length - ) <br/>
 
-|               | Count         |
-| ------------- | ------------- |
+|               | Count          |
+| ------------- | -------------  |
 | Non-meme      | 1,711          |
 | Meme          | 5,401          |
 | Non-SG meme   | 2,408          |
@@ -47,35 +48,35 @@ tags          - hashtags to describe a meme (min length - , max length - , mean 
 | Total         | 36,079        |
 
 
-Instagram handles-
-#mindefmemes
-@kmfst_
-@memedefsg
-@sgagsg
-#sgmeme
-#sgmemes
-#singaporememes
-@yeolo.sg
-@mndsg_ (memes n dreams singapore)
-@nus_memes 
-@smumemes
-@pioneer_university
-@changicollege
-@sginsurancememes
-@sgsocialworkmemes
-@mas_complaints
-@sit.tum.memes
+Instagram handles - <br/>
+#mindefmemes <br/>
+@kmfst_ <br/>
+@memedefsg <br/>
+@sgagsg <br/>
+#sgmeme <br/>
+#sgmemes <br/>
+#singaporememes <br/>
+@yeolo.sg <br/>
+@mndsg_ (memes n dreams singapore) <br/>
+@nus_memes <br/>
+@smumemes <br/>
+@pioneer_university <br/>
+@changicollege <br/>
+@sginsurancememes <br/>
+@sgsocialworkmemes <br/>
+@mas_complaints <br/>
+@sit.tum.memes <br/>
 #sgmemes
 
 ## Data Collection
-google_search_crawler.py - Data is collected form google search using keywords for each of the 6 pillars
-scrape_reddit.py - reddit scrape with inputs - subreddit,before and after timestamp
-To scrape instagram, we use instaloader library(https://pypi.org/project/instaloader/)
-usage - instaloader profile [instagram page handle e.g. memedefsg]
-This creates a folder with the handle name and downloads visuals
+data-scraping/google_search_crawler.py - Data is collected form google search using keywords for each of the 6 pillars <br/>
+data-scraping/scrape_reddit.py - reddit scrape with inputs - subreddit,before and after timestamp <br/>
+To scrape instagram, we use instaloader library(https://pypi.org/project/instaloader/) <br/>
+usage - instaloader profile [instagram page handle e.g. memedefsg] <br/>
+This creates a folder with the handle name and downloads visuals <br/>
 
 ## Installation
-data scraping from google - pip install simple-image-download
+data scraping from google - pip install simple-image-download <br/>
 data scraping from instagram - pip install instaloader
 
 ## Usage
