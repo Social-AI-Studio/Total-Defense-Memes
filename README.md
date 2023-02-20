@@ -1,6 +1,5 @@
 
 ## Rum 
-<br/>
 Multi-modal meme analysis
 
 ## File Summary
@@ -42,7 +41,7 @@ Each visual is assigned following labels: <br/>
 
 
 ## Dataset
-* data is available at - https://drive.google.com/file/d/1aFXF8ePvY-d2cBjKfH-MiAj_dqGhcHog/view?usp=sharing
+* data is available at - https://drive.google.com/file/d/1V9cQs4PSykGekX9RTWl6EyAbwaekadXp/view?usp=sharing
 
 |               | Count         |
 | ------------- | ------------- |
