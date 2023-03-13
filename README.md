@@ -1,5 +1,5 @@
 ## Dependencies
-simple-image-download 
+simple-image-download <br/>
 instaloader 
 
 #### Dataset Summary
@@ -8,13 +8,12 @@ instaloader
 |Non Memes          | 1,711     |     |
 |SG Memes           | 2,893     |     |
 |Non-SG Memes       | 2,408     |     |
-|Pillars - Stance   | 2,513     | [Social,Economic,Psychological,Military,Civil,Digital,Others] [Supportive,Neutral,Against] |
+|Pillars - Stance   | 2,513     | [Social,Economic,Psychological,Military,Civil,Digital,Others]-[Supportive,Neutral,Against] |
 |Tags               | 2,513     |     |
 |Text               | 7,012     |     |
 
-Dataset is available [here](https://drive.google.com/file/d/1KgjldRB1UjzD4fJGTPoiJIgzLVTzWYoS/view?usp=sharing)
+Dataset is available [here](https://drive.google.com/file/d/1KgjldRB1UjzD4fJGTPoiJIgzLVTzWYoS/view?usp=sharing) <br\>
 Annotation is available in report/annotation.json
-
 
 
 #### Data Collection
@@ -30,7 +29,8 @@ Annotation is available in report/annotation.json
 | Total         | 36,079        |
 
 
-Instagram handles Used- <br/>
+Instagram handles Used <br/>
+<br/>
 | #mindefmemes                       |
 | @kmfst_                            |
 | @memedefsg                         |
