@@ -3,7 +3,7 @@ simple-image-download <br/>
 instaloader 
 
 #### Data Collection
-![Image collection pipeline](./data-annotation-pipeline.png)
+![Image collection pipeline](./images/data-annotation-pipeline.png)
 * Google - Data is collected form google search API using keywords for each of the 6 pillars <br/>
 * Instagram - We use instaloader library(https://pypi.org/project/instaloader/) <br/>
     usage - instaloader profile [instagram page handle e.g. memedefsg] <br/>
@@ -36,7 +36,7 @@ Instagram handles Used <br/>
 | @sit.tum.memes                     |
 
 #### Dataset Annotation
-![Dataset Stats](./dataset_stats_updated.png)
+![Dataset Stats](./images/dataset_stats_updated.png)
 | Dataset           | #Visuals | classes |
 |:------------------|:----:|:---:|
 |Non Memes          | 1,711     |     |
