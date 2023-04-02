@@ -47,9 +47,13 @@ Instagram handles Used <br/>
 |Text               | 7,012     |     |
 
 Dataset is available [here](https://drive.google.com/file/d/1KgjldRB1UjzD4fJGTPoiJIgzLVTzWYoS/view?usp=sharing) <br/>
-Annotation is available in report/annotation.json
+Annotation is available in: <br/>
+* report/annotations_raw.csv - contains raw annotation by all annotators
+* report/annotation.json - <br/>
+    - contains labels based on agreement between annotators<br/>
+    - Tags are combined excluding duplicate tags and removing stop words
 
-Annotation stats (Krippendorf's alpha):
+## Annotation stats (Krippendorf's alpha):
 | Types           | Pillars | Stances |
 |:----------------|:-------:|:-------:|
 | 0.65            | 0.55    | 0.21    |
