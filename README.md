@@ -49,7 +49,7 @@ Instagram handles Used <br/>
 Dataset is available [here](https://drive.google.com/file/d/1KgjldRB1UjzD4fJGTPoiJIgzLVTzWYoS/view?usp=sharing) <br/>
 Annotation is available in report/annotation.json
 
-Annotation stats:
+Annotation stats (Krippendorf's alpha):
 | Types           | Pillars | Stances |
 |:----------------|:-------:|:-------:|
 | 0.65            | 0.55    | 0.21    |
