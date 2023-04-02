@@ -3,7 +3,7 @@ simple-image-download <br/>
 instaloader 
 
 #### Data Collection
-![Image collection pipeline](./data-annotation-pipeline.pdf)
+![Image collection pipeline](./data-annotation-pipeline.png)
 * Google - Data is collected form google search API using keywords for each of the 6 pillars <br/>
 * Instagram - We use instaloader library(https://pypi.org/project/instaloader/) <br/>
     usage - instaloader profile [instagram page handle e.g. memedefsg] <br/>
