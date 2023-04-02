@@ -51,6 +51,7 @@ Annotation is available in report/annotation.json
 
 Annotation stats:
 | Types           | Pillars | Stances |
+|:----------------|:-------:|:-------:|
 | 0.65            | 0.55    | 0.21    |
 
 
