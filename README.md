@@ -47,6 +47,8 @@ Instagram handles Used <br/>
 |Text               | 7,012     |     |
 
 Dataset is available [here](https://drive.google.com/file/d/1KgjldRB1UjzD4fJGTPoiJIgzLVTzWYoS/view?usp=sharing) <br/>
+This dataset should only be used for non-commercial research purposes. Should you find any meme in violation of copyright, please notify us and we will take it down.
+
 Annotation is available in: <br/>
 * report/annotations_raw.csv - contains raw annotation by all annotators
 * report/annotation.json - <br/>
