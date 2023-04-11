@@ -1,4 +1,4 @@
-!python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
+# !python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
 from detectron2.modeling import build_model
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.structures.image_list import ImageList
@@ -314,50 +314,57 @@ def get_visual_embeds(box_features, keep_boxes):
 
 
 
-device=torch.device('cuda')
-model = get_model(cfg).to(device)
+device=torch.device('cuda:1')
 cfg_path = "COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml"
 cfg = load_config_and_model_weights(cfg_path)
+model = get_model(cfg).to(device)
 
 if __name__ == '__main__':
     failed=[]
+    if(not os.path.exists("./input_embeddings")):
+        os.mkdir("input_embeddings")
     for file in glob2.glob("./TD_Memes/*"):
-        img=file
-        img=img.split("/")[-1]
-   
-        img1 = plt.imread(file)
-        # # Detectron expects BGR images
-        img_bgr = cv2.cvtColor(img1, cv2.COLOR_RGB2BGR)
-        images, batched_inputs = prepare_image_inputs(cfg, [img_bgr])
-        features = get_features(model, images)
-        proposals = get_proposals(model, images, features)
-        box_features, features_list = get_box_features(model, features, proposals)
-        pred_class_logits, pred_proposal_deltas = get_prediction_logits(model, features_list, proposals)
-        boxes, scores, image_shapes = get_box_scores(cfg, pred_class_logits, pred_proposal_deltas)
-        output_boxes = [get_output_boxes(boxes[i], batched_inputs[i], proposals[i].image_size) \
-                        for i in range(len(proposals))]
-        temp = [select_boxes(cfg, output_boxes[i], scores[i]) for i in range(len(scores))]
-        keep_boxes, max_conf = [],[]
-        for keep_box, mx_conf in temp:
-            keep_boxes.append(keep_box)
-            max_conf.append(mx_conf)
-        keep_boxes = [filter_boxes(keep_box, mx_conf, MIN_BOXES, MAX_BOXES) \
-                    for keep_box, mx_conf in zip(keep_boxes, max_conf)]
-        visual_embeds = [get_visual_embeds(box_feature, keep_box) \
-                        for box_feature, keep_box in zip(box_features, keep_boxes)]
-        visual_embeds = torch.stack(visual_embeds)
- 
-        visual_attention_mask = torch.ones(visual_embeds.shape[:-1], dtype=torch.long)
-        visual_token_type_ids = torch.ones(visual_embeds.shape[:-1], dtype=torch.long)
-        inputs={}
-        inputs.update(
-            {
-                "visual_embeds": visual_embeds,
-                "visual_token_type_ids": visual_token_type_ids,
-                "visual_attention_mask": visual_attention_mask,
-            })
-        with open('./input_embeddings/{}.pkl'.format(img),'wb') as f:
-            pkl.dump(inputs,f)   
+        try:
+            img=file
+            img=img.split("/")[-1]
+    
+            img1 = plt.imread(file)
+            # # Detectron expects BGR images
+            img_bgr = cv2.cvtColor(img1, cv2.COLOR_RGB2BGR)
+            images, batched_inputs = prepare_image_inputs(cfg, [img_bgr])
+            features = get_features(model, images)
+            proposals = get_proposals(model, images, features)
+            box_features, features_list = get_box_features(model, features, proposals)
+            pred_class_logits, pred_proposal_deltas = get_prediction_logits(model, features_list, proposals)
+            boxes, scores, image_shapes = get_box_scores(cfg, pred_class_logits, pred_proposal_deltas)
+            output_boxes = [get_output_boxes(boxes[i], batched_inputs[i], proposals[i].image_size) \
+                            for i in range(len(proposals))]
+            temp = [select_boxes(cfg, output_boxes[i], scores[i]) for i in range(len(scores))]
+            keep_boxes, max_conf = [],[]
+            for keep_box, mx_conf in temp:
+                keep_boxes.append(keep_box)
+                max_conf.append(mx_conf)
+            keep_boxes = [filter_boxes(keep_box, mx_conf, MIN_BOXES, MAX_BOXES) \
+                        for keep_box, mx_conf in zip(keep_boxes, max_conf)]
+            visual_embeds = [get_visual_embeds(box_feature, keep_box) \
+                            for box_feature, keep_box in zip(box_features, keep_boxes)]
+            visual_embeds = torch.stack(visual_embeds)
+    
+            visual_attention_mask = torch.ones(visual_embeds.shape[:-1], dtype=torch.long)
+            visual_token_type_ids = torch.ones(visual_embeds.shape[:-1], dtype=torch.long)
+            inputs={}
+            inputs.update(
+                {
+                    "visual_embeds": visual_embeds,
+                    "visual_token_type_ids": visual_token_type_ids,
+                    "visual_attention_mask": visual_attention_mask,
+                })
+            
+            with open('./input_embeddings/{}.pkl'.format(img),'wb') as f:
+                pkl.dump(inputs,f) 
+        except:
+            failed.append(file)
+    print(failed)                  
 
 
 
